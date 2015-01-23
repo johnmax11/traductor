@@ -1,6 +1,6 @@
 <?php
-namespace admin;
-class HomeController extends \BaseController {
+namespace admin\settings;
+class AccountController extends \BaseController {
 
     /**
      * Create a new controller instance.
