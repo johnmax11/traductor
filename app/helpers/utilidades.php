@@ -53,6 +53,8 @@ class utilidades {
     
     static function verifySessionRol($namespace){
         try{
+            $namespace = explode('\\',$namespace);
+            $namespace = $namespace[0];
             /**verificamos si esta en session*/
             if (!\Auth::check()){
                 return \View::make("/");

@@ -19,21 +19,6 @@ function stepsTranslateProfiler(containerSteps) {
     return optionsSteps;
   }
 
-  function optionsvalidate() {
-    var optValidate = {
-      errorPlacement: function errorPlacement(error, element) {
-        element.before(error);
-      },
-      rules: {
-        confirm: {
-          equalTo: "#password"
-        }
-      }
-    };
-
-    return optValidate;
-  }
-
   //
   function optionsStepsProcess() {
     var optionsEvent = {
@@ -56,8 +41,70 @@ function stepsTranslateProfiler(containerSteps) {
 
   //
   function eventOnStepChanging(event, currentIndex, newIndex) {
+    var form = $('#formTranslatorAccount');
+
+    switch (currentIndex) {
+      case 0:
+        return validationAccountStep(form);
+        break;
+      case 1:
+        return validationSkillsStep(form);
+        break;
+      case 2:
+        return validationExperienseStep(form);
+        break;
+      case 3:
+        return validationCVCertificatesStep(form);
+        break;
+    }
     containerSteps.validate().settings.ignore = ":disabled,:hidden";
+
     return containerSteps.valid();
+  }
+
+  function validationAccountStep(form) {
+    var password = form.find('input[name=password]');
+    var confirm = form.find('input[name=confirm]');
+
+    if (!password.val()) {
+      alert('Introduzca una contraseña');
+      return false;
+    }
+
+    var regularExpression = /^[a-zA-Z][0-9]$/;
+    var valid = regularExpression.test(password.val());
+
+    if (valid || (password.val().length < 6)) {
+      alert('No es una cntraseña valida');
+      return false;
+    }
+
+    if (!confirm.val()) {
+      alert('Introduzca una contraseña de confirmacion');
+      return false;
+    }
+
+    if (password.val() != confirm.val()) {
+      alert('las contraseñas deben ser iguales');
+      return false;
+    }
+
+    return true;
+  }
+
+  function validationSkillsStep(form) {
+    form.find('#sourceLanguaje');
+    form.find('#sourceLanguaje');
+    form.find('#sourceLanguaje');
+    form.find('#sourceLanguaje');
+  }
+
+  function validationExperienseStep(form) {
+
+  }
+
+  function validationCVCertificatesStep(form) {
+
   }
 
   //
@@ -88,25 +135,27 @@ function stepsTranslateProfiler(containerSteps) {
   this.createStepsTranslator = function() {
     var optStep = finalOptionsSteps();
     var optValidate = optionsvalidate();
-    var tranlationSection = new StepSkills();
+    var skillsSection = new StepSkills();
+    var expertiseSection = new expertise();
     var boxContainer = containerSteps.children("div");
 
-    containerSteps.validate(optValidate);
+    //containerSteps.validate(optValidate);
     boxContainer.steps(optStep);
-    tranlationSection.tranlationSection(boxContainer);
+    skillsSection.translationSection(boxContainer);
+    skillsSection.proofreadingSection(boxContainer);
+    expertiseSection.expertisegSection(boxContainer);
   }
 }
 
 //CLASS
 function StepSkills() {
   //
-  this.tranlationSection = function(containerSteps) {
+  this.translationSection = function(containerSteps) {
     var addButton = containerSteps.find('#addSourceAndTranslation');
-    addButton.off('submit');
-    addButton.click(addTranlationSection);
+    addButton.click(addTranslationSection);
   }
 
-  function addTranlationSection() {
+  function addTranslationSection() {
     var sourceLanguaje = $('#sourceLanguaje').find('option:selected');
     var targetLanguaje = $('#targetLanguaje').find('option:selected');
 
@@ -120,9 +169,10 @@ function StepSkills() {
     var tr = table.find('tr').length;
 
     for (var i = 0; i < tr; i++) {
-      console.log(i);
       var dataLanguajes = table.find('tr:eq(' + i + ') > input[type=hidden]').val();
-      console.log(dataLanguajes, '--->>>>>>>>>>>');
+
+      if (dataLanguajes === (sourceLanguaje.val() + '-' + targetLanguaje.val()))
+        return false;
     }
 
     var record = '<tr>' +
@@ -132,8 +182,94 @@ function StepSkills() {
       '<td><a href="#">Remove</a></td>' +
       '<input type="hidden" value="' + sourceLanguaje.val() + '-' + targetLanguaje.val() + '"/>'
     '</tr>';
-    $('#translationTable').children('tbody').append(record);
+    table.children('tbody').append(record);
 
+    var lastRecordInserted = table.find('tr').last();
+    var valueSelected = lastRecordInserted.find('input[type=hidden]');
+
+    valueSelected.click(removeRecordTable);
+
+    return false;
+  }
+
+  this.proofreadingSection = function(containerSteps) {
+    var addButton = containerSteps.find('#addProofreadingLenguaje');
+    addButton.click(addProofreadingSection);
+  }
+
+  function addProofreadingSection() {
+    var proofreadingLanguaje = $('#proofreadingLanguaje').find('option:selected');
+
+    if (!proofreadingLanguaje.val())
+      return false;
+
+    var table = $('#proofreadingTable');
+    var tr = table.find('tr').length;
+
+
+    for (var i = 0; i < tr; i++) {
+      var languaje = table.find('tr:eq(' + i + ') > input[type=hidden]').val();
+
+      if (proofreadingLanguaje.val() === languaje)
+        return false;
+    }
+
+    var record = '<tr>' +
+      '<td>' + proofreadingLanguaje.text() + '</td>' +
+      '<td><span>Pending</span></td>' +
+      '<td><a href="#" class="removeProofreading">Remove</span></td>' +
+      '<input type="hidden" value="' + proofreadingLanguaje.val() + '"/>'
+    '</tr>';
+    table.children('tbody').append(record);
+    $('.removeProofreading').click(removeRecordTable);
+
+    return false;
+  }
+
+  function removeRecordTable() {
+    $(this).parent().parent().remove();
+    return false;
+  }
+}
+
+function expertise() {
+  this.expertisegSection = function(containerSteps) {
+    var addButton = containerSteps.find('#addExpertiseLenguaje');
+    addButton.click(addExpertiseSection);
+  }
+
+  function addExpertiseSection() {
+    var expertiseLanguaje = $('#expertiseCombobox').find('option:selected');
+
+    if (!expertiseLanguaje.val())
+      return false;
+
+    var table = $('#expertiseTable');
+    var tr = table.find('tr').length;
+
+    for (var i = 0; i < tr; i++) {
+      var languaje = table.find('tr:eq(' + i + ') > input[type=hidden]').val();
+
+
+      if (expertiseLanguaje.val() === languaje)
+        return false;
+    }
+
+    var record = '<tr>' +
+      '<td>' + expertiseLanguaje.text() + '</td>' +
+      '<td><span>Pending</span></td>' +
+      '<td><a href="#" class="removeExpertise">Remove</span></td>' +
+      '<input type="hidden" value="' + expertiseLanguaje.val() + '"/>'
+    '</tr>';
+    table.children('tbody').append(record);
+
+    $('.removeExpertise').click(removeRecordTable);
+
+    return false;
+  }
+
+  function removeRecordTable() {
+    $(this).parent().parent().remove();
     return false;
   }
 }

@@ -8,7 +8,7 @@
     </head>
     <body>
         <div id="container">
-            <form id="formTranslatorAccount" action="#">
+            <form id="formTranslatorAccount" action="#" enctype="multipart/form-data">
                 <div>
                     <!--TODO -->
                     <h3>Account</h3>
@@ -74,11 +74,7 @@
                                 <div>
                                     <table id="translationTable">
                                         <thead></thead>
-                                        <tbody>
-                                            <tr><td>aaaa</td><td>bbbbb</td></tr>
-                                            <tr><td>ccccc</td><td>fffff</td></tr>
-                                            <input type="hidden" value="mivaluehidden">
-                                        </tbody>
+                                        <tbody></tbody>
                                         <tfoot></tfoot>
                                     </table>
                                 </div>
@@ -89,7 +85,7 @@
                                     <label for="">Proofreading Skills</label>
                                 </div>
                                 <div>
-                                    <select>
+                                    <select id="proofreadingLanguaje">
                                         <option value="">Select languaje</option>
                                         <option value="1">IDIOMA 1</option>
                                         <option value="2">IDIOMA 2</option>
@@ -97,7 +93,14 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <button>Add</button>
+                                    <button id="addProofreadingLenguaje">Add</button>
+                                </div>
+                                <div>
+                                    <table id="proofreadingTable">
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                        <tfoot></tfoot>
+                                    </table>
                                 </div>
                                 <hr />
                             </div>
@@ -112,7 +115,7 @@
                                 </label>
                             </div>
                             <div>
-                                <select>
+                                <select id="expertiseCombobox">
                                     <option value="">Select languaje</option>
                                     <option value="1">IDIOMA 1</option>
                                     <option value="2">IDIOMA 2</option>
@@ -120,10 +123,10 @@
                                 </select>
                             </div>
                             <div>
-                                <button>Add</button>
+                                <button id="addExpertiseLenguaje">Add</button>
                             </div>
                             <div>
-                                <table>
+                                <table id="expertiseTable">
                                     <thead></thead>
                                     <tbody></tbody>
                                     <tfoot></tfoot>
@@ -142,7 +145,7 @@
                                     <label>CV</label>
                                 </div>
                                 <div>
-                                    <button>Upload</button>
+                                    <input type="file" name="cv" multiple />
                                 </div>
                             </div>
                             <div>
@@ -150,7 +153,7 @@
                                     <label>Your ID card</label>
                                 </div>
                                 <div>
-                                    <button>Upload</button>
+                                    <input type="file" name="idCard" multiple />
                                 </div>
                             </div>
                             <div>
@@ -158,7 +161,7 @@
                                     <label>Relevant certificates</label>
                                 </div>
                                 <div>
-                                    <button>Upload</button>
+                                    <input type="file" name="relevantCertificates" multiple />
                                 </div>
                             </div>
                         </div>

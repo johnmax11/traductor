@@ -20,16 +20,20 @@ Route::get('/', function()
 Route::get('login', 'AuthController@showLogin');
 // Validamos los datos de inicio de sesión.
 Route::post('login', 'AuthController@postLogin');
-
-
 /******************************************************************************/
 /**rutas del publico***********************************************************/
 
 /**************************************************************************/
-
 // Nos indica que las rutas que están dentro de él sólo serán mostradas si antes el usuario se ha autenticado.
 Route::group(array('before' => 'auth'), function()
 {
+    /**insert track***/
+    $objFacUsersTrack = new facUsersTrack();
+    $objFacUsersTrack->setInsertUsersTrack((object)array(
+        'url_track'=>Request::url(),
+        'ip_address'=>Request::getClientIp()
+    ));
+        
     // Esta será nuestra ruta de bienvenida.
     Route::get('root/home',"root\HomeController@index");
     // Esta será nuestra ruta de bienvenida.
@@ -38,9 +42,11 @@ Route::group(array('before' => 'auth'), function()
     Route::get('traductor/home',"traductor\HomeController@index");
     // Esta será nuestra ruta de bienvenida.
     Route::get('cliente/home',"cliente\HomeController@index");
-    
+
     // Esta ruta nos servirá para cerrar sesión.
     Route::get('logout', 'AuthController@logOut');
+    // ruta para actualiza periodicamente el ssession
+    Route::post('Auth/index','AuthController@updateSession');
     
     /**************************************************************************/
     /**rutas del root**********************************************************/
@@ -49,7 +55,10 @@ Route::group(array('before' => 'auth'), function()
     
     /***************************************************************************/
     /**rutas del admin**********************************************************/
-    
+    Route::get('admin/settings/index',function(){
+        return View::make("admin/settings/index");
+    });
+    Route::get('admin/settings/account',"admin\AccountController@index");
     /**************************************************************************/
     
     /**************************************************************************/
@@ -61,10 +70,4 @@ Route::group(array('before' => 'auth'), function()
     /**rutas del traductor******************************************************/
     
     /**************************************************************************/
-    
-    /**track***/
-    $UsersTrack = new UsersTrack();$UsersTrack->created_By = 1;
-    
-    $UsersTrack->url_track = "holaa";
-    $UsersTrack->save();
 });
