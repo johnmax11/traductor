@@ -26,7 +26,7 @@ Route::post('login', 'AuthController@postLogin');
 //********----************//
 
 //Controlador que se encarga del conteo de palabras y devolucion de los datos
-Route::post('public/upload', 'publico\HomeController@setFiles');
+Route::post('public/upload', 'publico\HomeController@setFilesMain');
 
 //********----**********//
 //CIERRE rutas del publico

@@ -14,38 +14,88 @@ class HomeController extends \BaseController {
     }
 
     /**
-     * Metodo encargado de leer los documentos a subir, cuenta las palabras 
-     * del cuerpo del documento, encabezados, pies de pÃ¡gina
+     * Metodo encargado de leer los documentos subidos, cuenta las palabras 
+     * del cuerpo del documento, encabezados, pies de pagina
      * @return Json
      * @param string $file ruta de donde esta alojado el archivo
      * @author Carlos andres ruales <carlos.ruales@syslab.so>
      * 
      */
-    public function readFiles() {
-        return "hola";
+    public function readFiles($file,$ruta) {
+        try {
+            //print_r($file);
+            //$objClassFiles= new \classFilesCounting($file, $extension);
+            $laravelSession= \Cookie::get('laravel_session');
+            $objFacTmpCotizador= new \facTmpCotizador();
+            $objFacTmpCotizador->setInsertTmpCotizador((object)array(
+                "laravel_session_id"=>$laravelSession,
+                "archivo"=>$file
+            ));
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
     }
 
-    public function setFiles() {
+    /**
+     * Metodo encargado de validar las extensiones, si se envio y no esta vacia la variable 
+     * y de guardar en la ruta que se especifique
+     * @return Json
+     * @param string $file ruta de donde esta alojado el archivo
+     * @author Carlos andres ruales <carlos.ruales@syslab.so>
+     * 
+     */
+    public function setFiles($ruta, $extensiones) {
         try {
-            $files = array("qqfile" => \Input::all());
+            // Clase encargada de validar y de hacer el proceso del documento
+            $obj = new \fileUploader($extensiones);
 
-            if ($files['qqfile'] == null || $files['qqfile'] == "") {
-                throw new \Exception("Has ocurred a problem: the file not exits or it's empty");
-            }
+            //ruta donde se guardara el documento
+            $result = $obj->handleUpload($ruta,true);
 
-            $arrExtensions = array("doc", "docx", "ppt", "pptx", "pdf", "csv", "txt");
-            $obj = new \fileUploader($arrExtensions);
-
-
-            $result = $obj->handleUpload(filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/proyecto/traductor/public/files/');
-            echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+            return $result;
         } catch (\Exception $e) {
             return \Response::make($e->getMessage(), 400);
         }
     }
 
-    private function uploadFiles() {
-        
+    public function setFilesMain() {
+        try {
+            //guardamos en un array todo lo viene de los input
+            $files = \Input::all();
+           
+            
+           //print_r($_SERVER);
+           
+           $navegador= get_browser(filter_input(INPUT_SERVER, 'HTTP_USER_AGENT'), true);//filter_input(INPUT_SERVER, 'HTTP_USER_AGENT');
+           //print_r($navegador);
+           
+ 
+
+            //si no se envio o esta vacio lanzamos un error
+            if ($files['qqfile'] == null || $files['qqfile'] == "") {
+                throw new \Exception("Has ocurred a problem: the file not exits or It's empty");
+            }
+            
+            //ruta donde se guardara el documento
+            
+            
+            $ruta = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/traductor/public/files/';
+            // extensiones de documentos permitidos
+            $extensiones = $arrExtensions = array("doc", "docx", "ppt", "pptx", "pdf", "csv", "txt");
+
+            $result= $this->setFiles($ruta, $extensiones);
+
+            //identificamos que se guardo el documento y realizamos el conteo
+            if (isset($result['success'])) {
+                $this->readFiles($result['file'],$ruta);
+            }
+            //respuesta del proceso 
+            echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+        } catch (\Exception $e) {
+            return \Response::make($e->getMessage(), 400);
+        }
     }
+    
+    
 
 }

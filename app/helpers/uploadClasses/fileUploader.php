@@ -34,10 +34,8 @@ class fileUploader {
 
 
         if (isset($_GET['qqfile'])) {
-
             $this->file = new uploadedFileXhr();
         } elseif (isset($_FILES['qqfile'])) {
-
             $this->file = new uploadedFileForm();
         } else {
 
@@ -151,7 +149,7 @@ class fileUploader {
 
         if ($this->file->save($uploadDirectory . $filename . '.' . $ext)) {
 
-            return array('success' => true);
+            return array('success' => true,"file"=>$filename . '.' . $ext);
         } else {
 
             return array('error' => 'Could not save uploaded file.' .

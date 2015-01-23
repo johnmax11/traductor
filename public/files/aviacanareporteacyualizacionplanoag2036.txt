@@ -1,0 +1,79 @@
+
+ARCHIVOS RELACIONADOS - ARCHIVO PLANO
+
+aplication/views/movimiento_view.php
+aplication/views/archivoplano_view.php
+
+EN EL MENU SE AGREGO LA PESTAÑA NUEVA CON LSO LINKS
+menu.php
+menu_view.php
+
+aplication/tmp/ultra/
+aplication/libraries/archivoplano/
+aplication/libraries/movimiento/
+
+
+application/controllers/
+archivoplano.php
+movimiento.php
+
+
+application/models/
+archivoplanomodel.php
+movimientomodel.php
+
+
+application/libraries/menu/
+menu.js
+action.js
+
+
+se subieron los siguientes archivos PARA MANEJAR LA DESCARGA DE LA RCHIVO
+application/forcedownload.php
+
+
+application/controllers/welcome.php
+-----------------------------------
+
+TABLAS RELACIONADAS
+
+historial_archivoscreados
+servicio (num_servicio, matricula, 
+
+detalle_servicio (cantidad
+
+mantenimiento_inventario (fecha, 
+
+grupo_inventario (nombre, valor, cuenta_puc
+
+repuesto (nombre, 
+
+avion (centro_costo
+
+proveedor (identificacion, 
+tipo_servicio (contrato, mantenimiento, equipo_aereo, codigo_servicio
+
+
+en la tabla avion se agrego la columna 13 "centro_costo"
+
+en la tabla grupo_inventario se creo la columna 3 "cuenta_puc"
+
+en mantenimiento_inventario se creo la columna 9 "fecha"
+
+en proveedor se creo la columna 9"identificacion"
+
+
+hay algo extraño que note
+la tabla repuesto_pn esat en minusculas y en el servidor real se llama REPUESTO_PN en mayusculas
+
+
+tablas afectadas despues de un movimiento
+
+detalle_servicio
+servicio
+mantenimiento inventario: debita el item que se esta sacando
+
+
+
+
+
