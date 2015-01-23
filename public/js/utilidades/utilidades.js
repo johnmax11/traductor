@@ -14,12 +14,12 @@ $(document).ready(function(){
                             url: public_path+"/Auth/index",
                             preload:false,
                             success: function(params,msg){
-                                $.alertDialog({mensaje:msg.msj});
+                                //$.alertDialog({mensaje:msg.msj});
                             }
                         });
                     }
                 },
-                3000
+                300000
             );
         }
     }
@@ -139,6 +139,7 @@ $(document).ready(function(){
                 'buttons': {
                     "Ok":function(){
                        $(this).dialog("close");
+                       $('#' + args.id).remove();
                     }
                 },
                 'width':400,
@@ -160,7 +161,7 @@ $(document).ready(function(){
             strhtml += "</table>";
             strhtml += "</div>";
             //$("body").html(strhtml);
-            $(strhtml).appendTo("#divBody");
+            $(strhtml).appendTo("body");
             $("#div_" + args.id).dialog({
                 autoOpen: (args.autoopen!=undefined?args.autoopen:false),
                 modal: true,

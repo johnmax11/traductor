@@ -47,9 +47,9 @@
                                 <legend>Communication</legend>
                                 <div>
                                     {{ Form::label('lblEmail_1', 'E-mail 1') }}
-                                    {{ Form::text('txtEmail_1', null, array('class' => 'form-control validate','id'=>'txtEmail_1','disabled'=>'disabled')) }}
+                                    {{ Form::email('txtEmail_1', null, array('class' => 'form-control validate','id'=>'txtEmail_1','disabled'=>'disabled')) }}
                                     {{ Form::label('lblEmail_2', 'E-mail 2') }}
-                                    {{ Form::text('txtEmail_2', null, array('class' => 'form-control','id'=>'txtEmail_2')) }}
+                                    {{ Form::email('txtEmail_2', null, array('class' => 'form-control','id'=>'txtEmail_2')) }}
                                 </div>
                                 <div>
                                     {{ Form::label('lblPhone_1', 'Phone 1') }}
