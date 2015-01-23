@@ -1,8 +1,15 @@
 @extends('root.template.master')
 @section ('content')
-<section>
-    <div class="welcome">
-        hola root
-    </div>
-</section>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Laravel PHP Framework</title>
+</head>
+<body>
+	<div class="welcome">
+            hola root
+	</div>
+</body>
+</html>
 @stop

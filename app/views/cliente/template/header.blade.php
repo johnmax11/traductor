@@ -1,9 +1,13 @@
-<header>
-    <h1>Bienvenido {{ Auth::user()->usuario; }}</h1>
-</header>
-<nav>
-    <ul>
-        <li style="display:inline;"><a href="{{URL::to('cliente/home');}}">Home</a></li>
-        <li style="display:inline;"><a href="{{URL::to('/');}}/logout">Cerrar sesión</a></li>
-    </ul>
-</nav>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Laravel PHP Framework</title>
+</head>
+<body>
+    <div class="container ui-state-default">
+        <h1>Bienvenido {{ Auth::user()->usuario; }}</h1>
+        <a href="{{URL::to('/');}}/logout">Cerrar sesión.</a>
+    </div>
+</body>
+</html>
