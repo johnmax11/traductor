@@ -1,14 +1,15 @@
 <?php
+
 namespace publico;
+
 class HomeController extends \BaseController {
 
     /**
      * Create a new controller instance.
      *
      * @return void
-    */
-    public function index()
-    {
+     */
+    public function index() {
         return \View::make("public/home");
     }
 
@@ -26,53 +27,19 @@ class HomeController extends \BaseController {
 
     public function setFiles() {
         try {
-            echo "new";
-            $obj= new \nuevaclase();
-            //$uploader = new \hola\qqFileUploader($allowedExtensions, $sizeLimit);
-            //$obj= new \uploadFiles\qqFileUploader($uno,$dos);
-            //$obj->handleUpload($uploadDirectory);
-            //echo $uploader;
-            //echo "holaa" . \Input::all();
-            /*
-              if (\Input::hasFile('qqfile')) {
-              //
-              }else{
-              echo "no es nada";
-              }
-              $file = \Input::file('qqfile');
-              print_r($file);
+            $files = array("qqfile" => \Input::all());
 
-             *
-             * 
-             */
-            //$files = array("file" => \Request::post("qqfile"));
-
-
-
-            if ($file['qqfile'] == null || $file['qqfile'] == "") {
+            if ($files['qqfile'] == null || $files['qqfile'] == "") {
                 throw new \Exception("Has ocurred a problem: the file not exits or it's empty");
             }
 
-            $rules = array(
-                'file' => 'mimes:pdf,doc,docx,ppt,pptx,xls,txt',
-                'size' => '1024000'
-            );
+            $arrExtensions = array("doc", "docx", "ppt", "pptx", "pdf", "csv", "txt");
+            $obj = new \fileUploader($arrExtensions);
 
 
-            $validation = \Validator::make($file, $rules);
-
-
-
-            if ($validation->fails()) {
-                throw new \Exception($validation->errors()->first());
-            } else {
-                return \Response::make('success', 200);
-            }
-
-
-            //print_r($files);
+            $result = $obj->handleUpload(filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/proyecto/traductor/public/files/');
+            echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
         } catch (\Exception $e) {
-            // echo $e;
             return \Response::make($e->getMessage(), 400);
         }
     }
