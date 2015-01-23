@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Laravel PHP Framework</title>
+        <script>
+            var public_path = "{{ asset('') }}";
+        </script>
         {{ HTML::style('js/jquery-ui/css/ui-lightness/jquery-ui-1.9.2.custom.min.css'); }}
         <!--{{ HTML::style('css/jquery.jqGrid-4.6.0/css/ui.jqgrid.css'); }}-->
         {{ HTML::script('js/jquery-1.11.2.min.js'); }}
