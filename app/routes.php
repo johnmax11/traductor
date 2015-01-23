@@ -20,10 +20,18 @@ Route::get('/', function()
 Route::get('login', 'AuthController@showLogin');
 // Validamos los datos de inicio de sesión.
 Route::post('login', 'AuthController@postLogin');
-/******************************************************************************/
-/**rutas del publico***********************************************************/
 
-/**************************************************************************/
+//********----**********//
+//APERTURA rutas del publico
+//********----************//
+
+//Controlador que se encarga del conteo de palabras y devolucion de los datos
+Route::post('public/upload', 'publico\HomeController@setFiles');
+
+//********----**********//
+//CIERRE rutas del publico
+//********----************//
+
 // Nos indica que las rutas que están dentro de él sólo serán mostradas si antes el usuario se ha autenticado.
 Route::group(array('before' => 'auth'), function()
 {
