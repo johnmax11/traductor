@@ -1,0 +1,1 @@
+[12-Jun-2012 13:17:52] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Unknown MySQL server host 'hostname' (1) in /home/amadaws/public_html/crmjhon/include/javascript/valums-file-uploader-cf7bfb1/testmysql.php on line 2
