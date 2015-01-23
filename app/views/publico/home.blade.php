@@ -2,7 +2,7 @@
 @section ('content')
         {{HTML::script("js/jquery-1.11.2.min.js")}}
         {{HTML::style("js/jquery-steps/jquery.steps.css")}}
-        {{HTML::style("js/jquery-steps/jquery.steps.css")}}
+        {{HTML::style("js/jquery-steps/main.css")}}
         {{HTML::style("js/jquery-steps/normalize.css")}}
         {{HTML::script("js/jquery-steps/jquery.steps.js")}}
         {{HTML::script("js/jquery-steps/jquery.steps.min.js")}}
