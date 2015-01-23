@@ -19,6 +19,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/database/seeds',
 	app_path().'/facades',
         app_path().'/helpers',
+        app_path().'/helpers/uploadClasses',
 
 ));
 
