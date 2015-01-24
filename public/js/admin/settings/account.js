@@ -6,7 +6,7 @@
 */
 function valFunctionsDocument(){
    this.validateFormPreSend = function(){
-       if(!$.fn.validateForm("frmAccount",true)){
+       if(!$.fn.validateForm("frmAccount",true,false)){
            return false;
        }
    }

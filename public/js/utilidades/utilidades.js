@@ -118,7 +118,7 @@ $(document).ready(function(){
                 error:args.error,
                 success: function(msg){
                     if(valFunctions.validateResponse(msg,null)){
-                        var as_f = eval('('+args.success+')');
+                        eval('var as_f = ('+args.success+')');
                         as_f(args.params,msg);
                     }else{
 
@@ -227,7 +227,7 @@ $(document).ready(function(){
                 modal: true,
                 draggable: false,
                 resizable: false,
-                height: 130,
+                height: 120,
                 width: 'auto',
                 close: function() {
                     //$('#divDialogPreloadFullScreen').remove();
@@ -255,7 +255,7 @@ $(document).ready(function(){
         }
     });
     
-    $.fn.validateForm = function(form, tipo) {
+    $.fn.validateForm = function(form, tipo, paint_e) {
         tipo = (tipo == undefined ? 'alert' : 'msj');
 
         $.fn.removerClassValidate(form);
@@ -271,22 +271,24 @@ $(document).ready(function(){
                 bolvalidate = false;
 
                 $(this).addClass("ui-state-error");
-                if (tipo == 'alert') {
-                    alert("Campo Requerido: (" + arrStr.toUpperCase() + ")");
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Obligatorio</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    if (tipo == 'alert') {
+                        alert("Campo Requerido: (" + arrStr.toUpperCase() + ")");
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Obligatorio</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
             // validamos la longitud del campo //
             if ($(this).attr('pattern')) {
                 var arr_m_m = $.fn.get_min_max_length(this);
-                if (!$.fn.check_length($(this), arrStr.toUpperCase(), arr_m_m, tipo)) {
+                if (!$.fn.check_length($(this), arrStr.toUpperCase(), arr_m_m, tipo, paint_e)) {
                     bolvalidate = false;
                     $.fn.reset_campo($(this));
-                    return false;
+                    //return false;
                 }
             }
             // verificamos si es el usuario //
@@ -294,44 +296,50 @@ $(document).ready(function(){
                 if ($.fn.test_rex($(this), $.fn.validate_word_unique()) == false) {
                     bolvalidate = false;
                     $(this).addClass("ui-state-error");
-                    var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") unicamente se permite una palabra con solo letras y numeros sin espacios a-z, 0-9, comenzando con una letra";
-                    if (tipo == 'alert') {
-                        alert(strmsj);
-                    } else {
-                        $.fn.remove_lbl_error($(this));
-                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                    if(paint_e!=false){
+                        var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") unicamente se permite una palabra con solo letras y numeros sin espacios a-z, 0-9, comenzando con una letra";
+                        if (tipo == 'alert') {
+                            alert(strmsj);
+                        } else {
+                            $.fn.remove_lbl_error($(this));
+                            $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                        }
                     }
                     $.fn.reset_campo($(this));
-                    return false;
+                  //  return false;
                 }
             }
             // validamos los tipo email //
             if ($(this).attr('type') == 'email' && $.fn.test_rex($(this), $.fn.rexp_validate_email()) == false) {
                 bolvalidate = false;
                 $(this).addClass("ui-state-error");
-                var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") el email esta incorrecto, ej. example@correo.com";
-                if (tipo == 'alert') {
-                    alert(strmsj);
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") el email esta incorrecto, ej. example@correo.com";
+                    if (tipo == 'alert') {
+                        alert(strmsj);
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
             /***/
             if ($(this).attr('type') == 'number' && $.fn.test_rex($(this), $.fn.rex_validate_numeros_positivos_enteros()) == false) {
                 bolvalidate = false;
                 $(this).addClass("ui-state-error");
-                var strmsj = "El campo : (" + arrStr.toUpperCase() + ") solo recibe numero(s) entero(s)";
-                if (tipo == 'alert') {
-                    alert(strmsj);
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Numerico Positivo</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    var strmsj = "El campo : (" + arrStr.toUpperCase() + ") solo recibe numero(s) entero(s)";
+                    if (tipo == 'alert') {
+                        alert(strmsj);
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Numerico Positivo</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
         });
         if (bolvalidate == false) {
@@ -367,7 +375,7 @@ $(document).ready(function(){
     /**
      * valida un campo de tamaño min y maximo
      **/
-    $.fn.check_length = function(o, n, min_max, tipo_alert, tips) {
+    $.fn.check_length = function(o, n, min_max, tipo_alert, tips, paint_e) {
         min_max[1] = (min_max[1] == null ? 999 : min_max[1])
         if (o.val().length < min_max[0] || o.val().length > min_max[1]) {
             var strmsj = '';
@@ -377,15 +385,17 @@ $(document).ready(function(){
                 strmsj = "La cantidad de caracteres del campo (" + n + ") debe ser mayor a " + min_max[0];
             }
             o.addClass("ui-state-error");
-            if (tipo_alert == 'alert') {
-                alert(strmsj);
-            } else {
-                if (tipo_alert == 'msj') {
-                    $.fn.remove_lbl_error(o);
-                    o.after('<br id="b' + o.attr('id') + '"/><span id="s' + o.attr('id') + '" style="color:red;">' + strmsj + '</span>');
+            if(paint_e!=false){
+                if (tipo_alert == 'alert') {
+                    alert(strmsj);
                 } else {
-                    if (tipo_alert == 'div_up') {
-                        $.fn.update_tips(strmsj, tips);
+                    if (tipo_alert == 'msj') {
+                        $.fn.remove_lbl_error(o);
+                        o.after('<br id="b' + o.attr('id') + '"/><span id="s' + o.attr('id') + '" style="color:red;">' + strmsj + '</span>');
+                    } else {
+                        if (tipo_alert == 'div_up') {
+                            $.fn.update_tips(strmsj, tips);
+                        }
                     }
                 }
             }
