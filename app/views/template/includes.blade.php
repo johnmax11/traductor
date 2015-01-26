@@ -2,7 +2,21 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Laravel PHP Framework</title>
+        <title>.:: Trustlations ::.</title>
+        <style>
+            * {        		
+                    font-family: Arial,"Microsoft Sans Serif","Lucida Sans Unicode";        		
+                    line-height: normal;        
+                    margin: 0;        
+                    padding: 0;    	
+            }    	
+            body {       		
+                    font-size: 8pt;
+                    line-height: 18px;        
+                    margin: 0px;        
+                    padding: 0;    	
+            }
+        </style>
         <script>
             var public_path = "{{ asset('') }}";
         </script>

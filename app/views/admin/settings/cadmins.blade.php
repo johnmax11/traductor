@@ -1,6 +1,6 @@
 @extends('admin.template.master')
 @section ('content')
-{{ HTML::script('js/admin/settings/account.js'); }}
+{{ HTML::script('js/admin/settings/cadmins.js'); }}
 <content>
     <div>
         <table>
@@ -10,19 +10,19 @@
                 </th>
                 <th>
                     <div>
-                        <h1>Account Data</h1>
+                        <h1>Create Administrator</h1>
                         <div id="divStateError"></div>
-                        {{ Form::open(array('id'=>'frmAccount','url' => 'admin/settings/account/save', 'method' => 'POST')) }}
+                        {{ Form::open(array('id'=>'frmAccount','url' => 'admin/settings/cadmins/save', 'method' => 'POST')) }}
                         <div>
                             <fieldset>
                                 <legend>Data Login</legend>
                                 <div>
                                     {{ Form::label('lblEmail', 'E-mail') }}
-                                    {{ Form::email('txtEmail', null, array('class' => 'form-control validate','disabled'=>'disabled','id'=>'txtEmail')) }}
+                                    {{ Form::email('txtEmail', null, array('class' => 'form-control validate','id'=>'txtEmail')) }}
                                 </div>
                                 <div>
-                                    {{ Form::label('chkResetPassword', 'Reset Password') }}
-                                    {{ Form::checkbox('chkResetPassword',null,false, array('class' => 'form-control','id'=>'chkResetPassword')) }}
+                                    {{ Form::label('lblEmailR', 'Confirm E-mail') }}
+                                    {{ Form::email('txtEmailR', null, array('class' => 'form-control validate','id'=>'txtEmailR')) }}
                                 </div>
                             </fieldset>
                             <fieldset>
@@ -41,7 +41,7 @@
                                 </div>
                                 <div>
                                     {{ Form::label('lblStatus_user', 'Status User') }}
-                                    {{ Form::select('txtStatus_user', array('Y'=>'Active','N'=>'Inactive'),null, array('class' => 'form-control','id'=>'txtStatus_user','disabled'=>'disabled')) }}
+                                    {{ Form::select('txtStatus_user', array('Y'=>'Active','N'=>'Inactive'),null, array('class' => 'form-control','id'=>'txtStatus_user')) }}
                                 </div>
                             </fieldset>
                             <fieldset>

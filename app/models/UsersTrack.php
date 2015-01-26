@@ -12,6 +12,7 @@ class UsersTrack extends Eloquent {
     * @var string
     */
     protected $table = 'users_track';
+    public $timestamps = false;
     
     // Put this in any model and use
     // Modelname::findOrCreate($id);

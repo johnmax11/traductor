@@ -50,7 +50,7 @@ $(document).ready(function(){
         * validar error en reponse ajax y limpiar preload y animations after
         **/
         this.validateResponse = function(msg, id_div_pre, ind_anim) {
-           /** validamos si existe session cerrada */
+            /** validamos si existe session cerrada */
            if (msg.code != null) {
                alert(msg.msj);
                eval(msg.code);
@@ -68,7 +68,17 @@ $(document).ready(function(){
            ind_anim = (ind_anim == undefined ? '' : ind_anim);
            $('#img_animt-' + ind_anim).remove();
            if (msg.error != null && msg.error == true) {
-               alert((msg.msj == null ? 'Error: en response del request' : msg.msj));
+               $.alertDialog({mensaje:(msg.msj == null ? 'Error: en response del request' : msg.msj)});
+               /**verificamos si hay errores de validacion de campos**/
+               if(msg.mensajeError!=null){
+                   $.each(msg.mensajeError,function(indice, valor) {
+                        $('#'+indice).addClass("ui-state-error");
+                        if(document.getElementById('divStateError')){
+                            $('#divStateError').addClass('ui-state-error');
+                            $('#divStateError').append('* '+valor+'<br/>');
+                        }
+                    });
+                }
                return false;
            } else {
                if (msg == null || msg.error == null) {
@@ -118,7 +128,7 @@ $(document).ready(function(){
                 error:args.error,
                 success: function(msg){
                     if(valFunctions.validateResponse(msg,null)){
-                        var as_f = eval('('+args.success+')');
+                        eval('var as_f = ('+args.success+')');
                         as_f(args.params,msg);
                     }else{
 
@@ -146,7 +156,7 @@ $(document).ready(function(){
                 'autoopen':true
             }, args);
             
-            $('#' + args.id).remove();
+            $("#div_" + args.id).remove();
             var strhtml = "<div id='div_" + args.id + "' title='"+args.titulo+"'>";
             strhtml += "<table>";
             strhtml += "    <tr>";
@@ -178,13 +188,13 @@ $(document).ready(function(){
             // delete obj //
             $('#divDialogUtilidades').remove();
 
-            var html = "<div id='divDialogUtilidades' title='Confirmar...' class=''>";
+            var html = "<div id='divDialogUtilidades' title='Confirm...' class=''>";
             html += "		<div id='divPreloadReferenciaOtros' style='font-family:verdana;color:red;' align='center'></div>";
             html += "		<div style='color:blue;font-size:small;font-style:verdana;' class='ui-corner-all'>";
             if (args.msj != undefined && args.msj != null) {
                 html += "		<p><table style='width:100%;'><tr><th><img src='"+public_path+"/images/dialog-help.png'/></th><td>" + args.msj + "</td></tr></table></p>";
             } else {
-                html += "		<p>Realmente desea confirmar los datos?</p>";
+                html += "		<p>Really confirm data?</p>";
             }
             html += "		</div>";
 
@@ -196,9 +206,9 @@ $(document).ready(function(){
                 autoOpen: true,
                 modal: true,
                 buttons: {
-                    "Si": function() {
-                        if (args.si != undefined && args.si != null) {
-                            eval(args.si());
+                    "Yes": function() {
+                        if (args.Yes != undefined && args.Yes != null) {
+                            eval(args.Yes());
                         }
                         $(this).dialog('close');
                         $('#divDialogUtilidades').remove();
@@ -206,8 +216,8 @@ $(document).ready(function(){
                     },
                     "No": function() {
                         $(this).dialog('close');
-                        if (args.no != undefined && args.no != null) {
-                            eval(args.no());
+                        if (args.No != undefined && args.No != null) {
+                            eval(args.No());
                         }
                         return false;
                     }
@@ -227,7 +237,7 @@ $(document).ready(function(){
                 modal: true,
                 draggable: false,
                 resizable: false,
-                height: 130,
+                height: 120,
                 width: 'auto',
                 close: function() {
                     //$('#divDialogPreloadFullScreen').remove();
@@ -255,9 +265,13 @@ $(document).ready(function(){
         }
     });
     
-    $.fn.validateForm = function(form, tipo) {
+    $.fn.validateForm = function(form, tipo, paint_e) {
         tipo = (tipo == undefined ? 'alert' : 'msj');
 
+        if(document.getElementById('divStateError')){
+            $('#divStateError').html('');
+            $('#divStateError').removeClass('ui-state-error');
+        }
         $.fn.removerClassValidate(form);
         var bolvalidate = true;
         var arrStr = [];
@@ -271,22 +285,24 @@ $(document).ready(function(){
                 bolvalidate = false;
 
                 $(this).addClass("ui-state-error");
-                if (tipo == 'alert') {
-                    alert("Campo Requerido: (" + arrStr.toUpperCase() + ")");
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Obligatorio</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    if (tipo == 'alert') {
+                        alert("Campo Requerido: (" + arrStr.toUpperCase() + ")");
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Obligatorio</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
             // validamos la longitud del campo //
             if ($(this).attr('pattern')) {
                 var arr_m_m = $.fn.get_min_max_length(this);
-                if (!$.fn.check_length($(this), arrStr.toUpperCase(), arr_m_m, tipo)) {
+                if (!$.fn.check_length($(this), arrStr.toUpperCase(), arr_m_m, tipo, paint_e)) {
                     bolvalidate = false;
                     $.fn.reset_campo($(this));
-                    return false;
+                    //return false;
                 }
             }
             // verificamos si es el usuario //
@@ -294,44 +310,50 @@ $(document).ready(function(){
                 if ($.fn.test_rex($(this), $.fn.validate_word_unique()) == false) {
                     bolvalidate = false;
                     $(this).addClass("ui-state-error");
-                    var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") unicamente se permite una palabra con solo letras y numeros sin espacios a-z, 0-9, comenzando con una letra";
-                    if (tipo == 'alert') {
-                        alert(strmsj);
-                    } else {
-                        $.fn.remove_lbl_error($(this));
-                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                    if(paint_e!=false){
+                        var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") unicamente se permite una palabra con solo letras y numeros sin espacios a-z, 0-9, comenzando con una letra";
+                        if (tipo == 'alert') {
+                            alert(strmsj);
+                        } else {
+                            $.fn.remove_lbl_error($(this));
+                            $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                        }
                     }
                     $.fn.reset_campo($(this));
-                    return false;
+                  //  return false;
                 }
             }
             // validamos los tipo email //
             if ($(this).attr('type') == 'email' && $.fn.test_rex($(this), $.fn.rexp_validate_email()) == false) {
                 bolvalidate = false;
                 $(this).addClass("ui-state-error");
-                var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") el email esta incorrecto, ej. example@correo.com";
-                if (tipo == 'alert') {
-                    alert(strmsj);
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    var strmsj = "En el campo : (" + arrStr.toUpperCase() + ") el email esta incorrecto, ej. example@correo.com";
+                    if (tipo == 'alert') {
+                        alert(strmsj);
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">' + strmsj + '</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
             /***/
             if ($(this).attr('type') == 'number' && $.fn.test_rex($(this), $.fn.rex_validate_numeros_positivos_enteros()) == false) {
                 bolvalidate = false;
                 $(this).addClass("ui-state-error");
-                var strmsj = "El campo : (" + arrStr.toUpperCase() + ") solo recibe numero(s) entero(s)";
-                if (tipo == 'alert') {
-                    alert(strmsj);
-                } else {
-                    $.fn.remove_lbl_error($(this));
-                    $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Numerico Positivo</span><br id="ulb' + elemento.id + '"/>');
+                if(paint_e!=false){
+                    var strmsj = "El campo : (" + arrStr.toUpperCase() + ") solo recibe numero(s) entero(s)";
+                    if (tipo == 'alert') {
+                        alert(strmsj);
+                    } else {
+                        $.fn.remove_lbl_error($(this));
+                        $(this).after('<br id="b' + elemento.id + '"/><span id="s' + elemento.id + '" style="color:red;">Campo Numerico Positivo</span><br id="ulb' + elemento.id + '"/>');
+                    }
                 }
                 $.fn.reset_campo($(this));
-                return false;
+                //return false;
             }
         });
         if (bolvalidate == false) {
@@ -367,7 +389,7 @@ $(document).ready(function(){
     /**
      * valida un campo de tamaño min y maximo
      **/
-    $.fn.check_length = function(o, n, min_max, tipo_alert, tips) {
+    $.fn.check_length = function(o, n, min_max, tipo_alert, tips, paint_e) {
         min_max[1] = (min_max[1] == null ? 999 : min_max[1])
         if (o.val().length < min_max[0] || o.val().length > min_max[1]) {
             var strmsj = '';
@@ -377,15 +399,17 @@ $(document).ready(function(){
                 strmsj = "La cantidad de caracteres del campo (" + n + ") debe ser mayor a " + min_max[0];
             }
             o.addClass("ui-state-error");
-            if (tipo_alert == 'alert') {
-                alert(strmsj);
-            } else {
-                if (tipo_alert == 'msj') {
-                    $.fn.remove_lbl_error(o);
-                    o.after('<br id="b' + o.attr('id') + '"/><span id="s' + o.attr('id') + '" style="color:red;">' + strmsj + '</span>');
+            if(paint_e!=false){
+                if (tipo_alert == 'alert') {
+                    alert(strmsj);
                 } else {
-                    if (tipo_alert == 'div_up') {
-                        $.fn.update_tips(strmsj, tips);
+                    if (tipo_alert == 'msj') {
+                        $.fn.remove_lbl_error(o);
+                        o.after('<br id="b' + o.attr('id') + '"/><span id="s' + o.attr('id') + '" style="color:red;">' + strmsj + '</span>');
+                    } else {
+                        if (tipo_alert == 'div_up') {
+                            $.fn.update_tips(strmsj, tips);
+                        }
                     }
                 }
             }
@@ -443,7 +467,7 @@ $(document).ready(function(){
 
     /***/
     $.fn.removerClassValidate = function(form) {
-        $("#" + form).find('.validate').each(function() {
+        $("#" + form).find(':input').each(function() {
             $(this).removeClass("ui-state-error");
             $('#s' + this.id).remove();
             $('#b' + this.id).remove();
@@ -466,7 +490,7 @@ $(document).ready(function(){
      **/
     $.fn.fnValidaCamposDesIguales = function(obj, obj2, tipo) {
         tipo = (tipo == undefined ? 'alert' : 'msj');
-        if ($(obj).val().trim() != '' && $(obj2).val().trim() != '' && $(obj).val().trim() != $(obj2).val().trim()) {
+        if ($(obj).val() != '' && $(obj2).val() != '' && $(obj).val() != $(obj2).val()) {
             obj.addClass("ui-state-error");
             obj2.addClass("ui-state-error");
 

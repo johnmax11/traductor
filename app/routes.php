@@ -55,9 +55,13 @@ Route::group(array('before' => 'auth'), function()
     
     /***************************************************************************/
     /**rutas del admin**********************************************************/
+    /** modulo setting  ******************/
     Route::get('admin/settings/account',"admin\settings\AccountController@index");
-    Route::get('admin/settings/account/save',"admin\settings\AccountController@GuardarDatosAccount");
+    Route::post('admin/settings/account/save',"admin\settings\AccountController@GuardarDatosAccount");
     Route::post('admin/settings/account/loaddataaccout',"admin\settings\AccountController@CargarDatosById");
+    Route::post('admin/settings/account/resetpassword',"admin\settings\AccountController@ResetPassword");
+    Route::get('admin/settings/cadmins',"admin\settings\CadminsController@index");
+    Route::post('admin/settings/cadmins/save',"admin\settings\CadminsController@GuardarDatosCadmins");
     /**************************************************************************/
     
     /**************************************************************************/
