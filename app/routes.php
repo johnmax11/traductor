@@ -62,6 +62,7 @@ Route::group(array('before' => 'auth'), function()
     Route::post('admin/settings/account/resetpassword',"admin\settings\AccountController@ResetPassword");
     Route::get('admin/settings/cadmins',"admin\settings\CadminsController@index");
     Route::post('admin/settings/cadmins/save',"admin\settings\CadminsController@GuardarDatosCadmins");
+    Route::post('admin/settings/cadmins/validateemail',"admin\settings\CadminsController@ValidateEmail");
     /**************************************************************************/
     
     /**************************************************************************/
