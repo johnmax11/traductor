@@ -21,7 +21,7 @@ class facUsersTrack {
             $objUsersTrack->url_track = $arrParametros->url_track;
             $objUsersTrack->ip_address = $arrParametros->ip_address;
             $objUsersTrack->created_by = Auth::user()->id;
-            $objUsersTrack->updated_at = null;
+            $objUsersTrack->created_at = @date('Y-m-d h:i:s');
             
             $objUsersTrack->save();
             return $objUsersTrack->id;

@@ -2,7 +2,11 @@
 @section ('content')
 <section>
     <div class="welcome">
-        hola traductor
+        @if($bolFirstSession)
+            trad nuevo
+        @else
+            trad old
+        @endif
     </div>
 </section>
 @stop

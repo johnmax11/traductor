@@ -4,14 +4,14 @@
  *
  * @author programador1
  */
-class UsersTrack extends Eloquent {
+class AccountDataCommunications extends Eloquent {
     //put your code here
     /**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'users_track';
+    protected $table = 'account_data_communications';
     public $timestamps = false;
     
     // Put this in any model and use
