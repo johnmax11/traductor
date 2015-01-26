@@ -7,6 +7,17 @@
 class facUsersIncome {
     //put your code here
     
+    /**
+     * consulta la tabla users income
+     * 
+     * @author john jairo cortes garcia <john.cortes@syslab.so>
+     * @param type $arrParametros
+     * @param type $arrGroupBy
+     * @param type $arrOrderBy
+     * @param type $arrLimit
+     * @return type
+     * @throws Exception
+     */
     public function getUsersIncome($arrParametros = null,$arrGroupBy=null,$arrOrderBy=null,$arrLimit=null){
         try{
             $objModel = new UsersIncome();

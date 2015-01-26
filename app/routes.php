@@ -55,10 +55,9 @@ Route::group(array('before' => 'auth'), function()
     
     /***************************************************************************/
     /**rutas del admin**********************************************************/
-    Route::get('admin/settings/index',function(){
-        return View::make("admin/settings/index");
-    });
-    Route::get('admin/settings/account',"admin\AccountController@index");
+    Route::get('admin/settings/account',"admin\settings\AccountController@index");
+    Route::get('admin/settings/account/save',"admin\settings\AccountController@GuardarDatosAccount");
+    Route::post('admin/settings/account/loaddataaccout',"admin\settings\AccountController@CargarDatosById");
     /**************************************************************************/
     
     /**************************************************************************/
