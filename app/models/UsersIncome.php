@@ -12,6 +12,7 @@ class UsersIncome extends Eloquent {
     * @var string
     */
     protected $table = 'users_income';
+    public $timestamps = false;
     
     // Put this in any model and use
     // Modelname::findOrCreate($id);

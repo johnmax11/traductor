@@ -50,7 +50,7 @@ $(document).ready(function(){
         * validar error en reponse ajax y limpiar preload y animations after
         **/
         this.validateResponse = function(msg, id_div_pre, ind_anim) {
-           /** validamos si existe session cerrada */
+            /** validamos si existe session cerrada */
            if (msg.code != null) {
                alert(msg.msj);
                eval(msg.code);
@@ -68,7 +68,17 @@ $(document).ready(function(){
            ind_anim = (ind_anim == undefined ? '' : ind_anim);
            $('#img_animt-' + ind_anim).remove();
            if (msg.error != null && msg.error == true) {
-               alert((msg.msj == null ? 'Error: en response del request' : msg.msj));
+               $.alertDialog({mensaje:(msg.msj == null ? 'Error: en response del request' : msg.msj)});
+               /**verificamos si hay errores de validacion de campos**/
+               if(msg.mensajeError!=null){
+                   $.each(msg.mensajeError,function(indice, valor) {
+                        $('#'+indice).addClass("ui-state-error");
+                        if(document.getElementById('divStateError')){
+                            $('#divStateError').addClass('ui-state-error');
+                            $('#divStateError').append('* '+valor+'<br/>');
+                        }
+                    });
+                }
                return false;
            } else {
                if (msg == null || msg.error == null) {
@@ -146,7 +156,7 @@ $(document).ready(function(){
                 'autoopen':true
             }, args);
             
-            $('#' + args.id).remove();
+            $("#div_" + args.id).remove();
             var strhtml = "<div id='div_" + args.id + "' title='"+args.titulo+"'>";
             strhtml += "<table>";
             strhtml += "    <tr>";
@@ -178,13 +188,13 @@ $(document).ready(function(){
             // delete obj //
             $('#divDialogUtilidades').remove();
 
-            var html = "<div id='divDialogUtilidades' title='Confirmar...' class=''>";
+            var html = "<div id='divDialogUtilidades' title='Confirm...' class=''>";
             html += "		<div id='divPreloadReferenciaOtros' style='font-family:verdana;color:red;' align='center'></div>";
             html += "		<div style='color:blue;font-size:small;font-style:verdana;' class='ui-corner-all'>";
             if (args.msj != undefined && args.msj != null) {
                 html += "		<p><table style='width:100%;'><tr><th><img src='"+public_path+"/images/dialog-help.png'/></th><td>" + args.msj + "</td></tr></table></p>";
             } else {
-                html += "		<p>Realmente desea confirmar los datos?</p>";
+                html += "		<p>Really confirm data?</p>";
             }
             html += "		</div>";
 
@@ -196,9 +206,9 @@ $(document).ready(function(){
                 autoOpen: true,
                 modal: true,
                 buttons: {
-                    "Si": function() {
-                        if (args.si != undefined && args.si != null) {
-                            eval(args.si());
+                    "Yes": function() {
+                        if (args.Yes != undefined && args.Yes != null) {
+                            eval(args.Yes());
                         }
                         $(this).dialog('close');
                         $('#divDialogUtilidades').remove();
@@ -206,8 +216,8 @@ $(document).ready(function(){
                     },
                     "No": function() {
                         $(this).dialog('close');
-                        if (args.no != undefined && args.no != null) {
-                            eval(args.no());
+                        if (args.No != undefined && args.No != null) {
+                            eval(args.No());
                         }
                         return false;
                     }
@@ -258,6 +268,10 @@ $(document).ready(function(){
     $.fn.validateForm = function(form, tipo, paint_e) {
         tipo = (tipo == undefined ? 'alert' : 'msj');
 
+        if(document.getElementById('divStateError')){
+            $('#divStateError').html('');
+            $('#divStateError').removeClass('ui-state-error');
+        }
         $.fn.removerClassValidate(form);
         var bolvalidate = true;
         var arrStr = [];
@@ -453,7 +467,7 @@ $(document).ready(function(){
 
     /***/
     $.fn.removerClassValidate = function(form) {
-        $("#" + form).find('.validate').each(function() {
+        $("#" + form).find(':input').each(function() {
             $(this).removeClass("ui-state-error");
             $('#s' + this.id).remove();
             $('#b' + this.id).remove();
@@ -476,7 +490,7 @@ $(document).ready(function(){
      **/
     $.fn.fnValidaCamposDesIguales = function(obj, obj2, tipo) {
         tipo = (tipo == undefined ? 'alert' : 'msj');
-        if ($(obj).val().trim() != '' && $(obj2).val().trim() != '' && $(obj).val().trim() != $(obj2).val().trim()) {
+        if ($(obj).val() != '' && $(obj2).val() != '' && $(obj).val() != $(obj2).val()) {
             obj.addClass("ui-state-error");
             obj2.addClass("ui-state-error");
 

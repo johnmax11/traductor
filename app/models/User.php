@@ -15,6 +15,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 	protected $table = 'users';
+        public $timestamps = false;
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -22,5 +23,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var array
 	 */
 	protected $hidden = array('password', 'remember_token');
+        
+        // Put this in any model and use
+        // Modelname::findOrCreate($id);
+        public static function findOrCreate($column,$id)
+        {
+            $obj = static::where($column , '=', $id)->first();
+            //$obj = static::find($id);
+            return $obj ?: new static;
+        }
 
 }

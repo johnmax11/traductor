@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Laravel PHP Framework</title>
+        <title>.:: Trustlations ::.</title>
         <style>
             * {        		
                     font-family: Arial,"Microsoft Sans Serif","Lucida Sans Unicode";        		

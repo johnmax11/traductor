@@ -64,7 +64,7 @@ class facUsersIncome {
                 $objUsersIncome->timestamp_exit = $arrParametros->timestamp_exit;
             }
             $objUsersIncome->created_by = Auth::user()->id;
-            $objUsersIncome->updated_at = null;
+            $objUsersIncome->created_at = @date('Y-m-d h:i:s');
             
             $objUsersIncome->save();
             return $objUsersIncome->id;
@@ -85,11 +85,12 @@ class facUsersIncome {
     public function setUpdateUsersIncome($arrParametros = array()){
         try{
             $objUsersIncome = new UsersIncome();
-            $objUsersIncome = $objUsersIncome::findOrCreate(isset($arrParametros->custom_c)?$arrParametros->custom_c:'id',isset($arrParametros->coustom_v)?$arrParametros->custom_c:$arrParametros->id);
+            $objUsersIncome = $objUsersIncome::findOrCreate((isset($arrParametros->custom_c)?$arrParametros->custom_c:'id'),(isset($arrParametros->custom_v)?$arrParametros->custom_v:$arrParametros->id));
             if(isset($arrParametros->timestamp_exit)){
                 $objUsersIncome->timestamp_exit = $arrParametros->timestamp_exit;
             }
             $objUsersIncome->updated_by = Auth::user()->id;
+            $objUsersIncome->updated_at = @date('Y-m-d h:i:s');
             
             $objUsersIncome->save();
             return true;
