@@ -102,6 +102,8 @@ $(document).ready(function(){
            $('#divPreload-ui').remove();
            $("#divDialogPreloadFullScreen").dialog('destroy');
            $("#divDialogPreloadFullScreen").remove();
+           /***/
+           location.reload();
        }
     }
     var valFunctions = new valFunctions();

@@ -63,6 +63,9 @@ Route::group(array('before' => 'auth'), function()
     Route::get('admin/settings/cadmins',"admin\settings\CadminsController@index");
     Route::post('admin/settings/cadmins/save',"admin\settings\CadminsController@GuardarDatosCadmins");
     Route::post('admin/settings/cadmins/validateemail',"admin\settings\CadminsController@ValidateEmail");
+    Route::get('admin/linguists/usersregistered',"admin\linguists\UsersRegisteredController@index");
+    Route::post('admin/linguists/usersregistered/loadusersbytype',"admin\linguists\UsersRegisteredController@loadUserByType");
+    
     /**************************************************************************/
     
     /**************************************************************************/
