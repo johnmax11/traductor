@@ -12,6 +12,7 @@ class AccountDataCommunications extends Eloquent {
     * @var string
     */
     protected $table = 'account_data_communications';
+    public $timestamps = false;
     
     // Put this in any model and use
     // Modelname::findOrCreate($id);

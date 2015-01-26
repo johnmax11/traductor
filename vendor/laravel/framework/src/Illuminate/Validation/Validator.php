@@ -1577,7 +1577,17 @@ class Validator implements MessageProviderInterface {
 	 */
 	protected function doReplacements($message, $attribute, $rule, $parameters)
 	{
-		$message = str_replace(':attribute', $this->getAttribute($attribute), $message);
+            $bolStr = false;
+            if(
+                strpos($this->getAttribute($attribute),'txt') !== false ||
+                strpos($this->getAttribute($attribute),'sel') !== false ||
+                strpos($this->getAttribute($attribute),'hdn') !== false ||
+                strpos($this->getAttribute($attribute),'tar') !== false 
+            ){
+                //echo $this->getAttribute($attribute).'->aca-_<';
+                $bolStr = true;
+            }
+		$message = str_replace(':attribute', ($bolStr==true?substr($this->getAttribute($attribute),4):$this->getAttribute($attribute)), $message);
 
 		if (isset($this->replacers[snake_case($rule)]))
 		{

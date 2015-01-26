@@ -13,6 +13,16 @@ return array(
 	| to have a conventional place to find your various credentials.
 	|
 	*/
+ 
+    'driver' => 'smtp',
+    'host' => 'smtp.gmail.com',
+    'port' => 587,
+    'from' => array('address' => 'info@trustlations.com', 'name' => 'Trustlations.com'),
+    'encryption' => 'tls',
+    'username' => 'your_gmail_username',
+    'password' => 'your_gmail_password',
+    'sendmail' => '/usr/sbin/sendmail -bs',
+    'pretend' => false,
 
 	'mailgun' => array(
 		'domain' => '',
