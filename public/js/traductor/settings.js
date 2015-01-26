@@ -4,9 +4,39 @@
  * and open the template in the editor.
  */
 
+//CLASS
+//
+function settings() {
+  this.doRequest = function(route, data) {
+    $.ajax({
+      url: route,
+      data: data,
+      type: post,
+      success: function(result) {
+        alert('success');
+        return result;
+      },
+      error: function(){
+        alert('ERROR request');
+      }
+    });
+  }
+}
+
+//CLASS
+function dataSettings(){
+  this.getData = function(){
+    var data = new settings();
+    data = data.doRequest('traductor/', {});
+
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    console.log(data);
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+  }
+}
+
 //Clase usada para la funcionalidad de jquerySteps in Translate Profiler 
 function stepsTranslateProfiler(containerSteps) {
-
   //
   function defaultOptionsSteps() {
     var optionsSteps = {
