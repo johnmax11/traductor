@@ -142,10 +142,11 @@
     background: #eee;
     display: block;
     margin: 0.5em;
-    min-height: 35em;
+    min-height: 20em;
     overflow: hidden;
     position: relative;
     width: auto;
+    height: auto;
 
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

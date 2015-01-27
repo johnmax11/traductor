@@ -18,6 +18,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/models',
 	app_path().'/database/seeds',
 	app_path().'/facades',
+        app_path().'/helpers',
 
 ));
 
@@ -50,6 +51,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+        //return Response::view('errors', [], 500);
 });
 
 /*

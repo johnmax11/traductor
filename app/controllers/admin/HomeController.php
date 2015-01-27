@@ -9,9 +9,9 @@ class HomeController extends \BaseController {
     */
     public function index()
     {
-        //echo \Auth::check();exit;
-        if (!\Auth::check()){
-            return \View::make("/");
+        /**verificamos session*/
+        if(\utilidades::verifySessionRol(__NAMESPACE__) != null){
+            return \utilidades::verifySessionRol(__NAMESPACE__);
         }
         
         return \View::make("admin/home");

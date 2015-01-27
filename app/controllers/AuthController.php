@@ -36,6 +36,11 @@ class AuthController extends BaseController {
         // Validamos los datos y además mandamos como un segundo parámetro la opción de recordar el usuario.
         if(Auth::attempt($userdata, Input::get('remember-me', 0)))
         {
+            /**
+            * insertamos el inicio de ssession del user
+            */
+            $objFacUsersIncome = new facUsersIncome();
+            $objFacUsersIncome->setInsertUsersIncome();
             /**verificamos el rol del usuario**/
             /**root sistema**/
             if(Auth::user()->security_roles_id == 1){
@@ -74,13 +79,55 @@ class AuthController extends BaseController {
                     ->withInput();
     }
 	
-	/**
+    /**
      * Muestra el formulario de login mostrando un mensaje de que cerró sesión.
      */
     public function logOut()
-    {
+    {   
         Auth::logout();
         return Redirect::to('/')
                     ->with('mensaje_error', 'Tu sesión ha sido cerrada.');
+    }
+    
+    /**
+     * actualiza el tiempo de session actual
+     * 
+     * @author john jairo cortes garcia <john.cortes@syslab.so>
+     * @date 21-01-2015
+     * @return boolean
+     * @param null
+     * @throws Exception
+     */
+    public function updateSession(){
+        try{
+            if (!Auth::check()){
+                Response::json(array('msj'=>'ok','error'=>false));
+                return true;
+            }
+            
+            $objFacUsersIncome = new facUsersIncome();
+            /**buscamos el id del ultimo registros del user*/
+            $arrDatosUsIn = $objFacUsersIncome->getUsersIncome(array(
+                "created_by||=||".Auth::user()->id
+            ),
+            null,
+            array(
+                "id||DESC"
+            ),
+            array(
+                0,1
+            ));
+            $dt = new DateTime;
+            
+            if($arrDatosUsIn!=null){
+                $objFacUsersIncome->setUpdateUsersIncome((object)array(
+                    "id"=>$arrDatosUsIn[0]->id,
+                    "timestamp_exit"=>$dt->format('Y-m-d H:i:s')
+                ));
+            }
+            return Response::json(array('msj'=>'successful process','error'=>false));
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 }

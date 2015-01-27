@@ -1,4 +1,3 @@
-
 <header>
     <h1>Bienvenido {{ Auth::user()->usuario; }}</h1>
 </header>
@@ -16,4 +15,3 @@
         <li style="display:inline;"><a href="{{URL::to('/');}}/logout">Cerrar sesión</a></li>
     </ul>
 </nav>
-

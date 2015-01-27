@@ -71,6 +71,6 @@ Route::group(array('before' => 'auth'), function()
     
     /***************************************************************************/
     /**rutas del traductor******************************************************/
-    Route::post('traductor/dataSettingsUser',"traductor\SettingsController@getDataTraductor");
+    Route::post('traductor/settings/account', 'traductor\settings\SettingsController@getDataTraductor');
     /**************************************************************************/
 });

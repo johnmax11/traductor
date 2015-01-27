@@ -519,3 +519,4 @@ $(document).ready(function(){
     /***iniciamos la actualizacion de fecha de cierre de session*/
     ajaxIndexTrigger.setInsertUpdateIniSession();
 });
+

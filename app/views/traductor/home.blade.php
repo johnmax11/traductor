@@ -15,19 +15,60 @@
                     <section>
                         <div>
                             <div>
-                                <label for="userName">User name *</label>
-                                <input id="userName" name="userName" type="text"  />
-                            </div>
-                            <div>
                                 <label for="password">Password *</label>
-                                <input id="password" name="password" type="password"  />
+                                <input id="password" name="password" type="password" />
                             </div>
                             <div>
                                 <label for="confirm">Confirm Password *</label>
-                                <input id="confirm" name="confirm" type="password"  /> 
+                                <input id="confirm" name="confirm" type="password" /> 
                             </div>
                         </div>
-                    </section> 
+                    </section>
+					<h3>Profile</h3>
+					<section>
+						<div>
+							<div>
+								<label for="firts_name">Firts name: </label>
+								<input type="text" id="first_name" />
+							</div>
+							<div>
+								<label for="firts_midle_name">Firts middle name: </label>
+								<input type="text" id="first_middle_name" />
+							</div>
+							<div>
+								<label for="last_name">last name: </label>
+								<input type="text" id="last_name" />
+							</div>
+							<div>
+								<label for="last_middle_name">last middle name: </label>
+								<input type="text" id="last_middle_name">
+							</div>
+							<div>
+								<label for="email_notf_1">Email notification 1: </label>
+								<input type="text" id="email_notf_1">
+							</div>
+							<div>
+								<label for="email_notf_2">Email notification 2: </label>
+								<input type="text" id="email_notf_2">
+							</div>
+							<div>
+								<label for="phone_number_1">phone number 1: </label>
+								<input type="text" id="phone_number_1">
+							</div>
+							<div>
+								<label for="phone_number_2">phone number 1: </label>
+								<input type="text" id="phone_number_1">
+							</div>
+							<div>
+								<label for="phone_number_mobile_1">cellphone number 1: </label>
+								<input type="text" id="phone_number_mobile_1">
+							</div>
+							<div>
+								<label for="phone_number_mobile_2">cellphone number 2: </label>
+								<input type="text" id="phone_number_mobile_2">
+							</div>
+						</div>
+					</section>
                     <h3>Languajes Skills</h3>
                     <section>
                         <div>
@@ -165,6 +206,26 @@
                                 </div>
                             </div>
                         </div>
+                    </section>
+                    <h3></h3>
+                    <section>
+                    	
+                    </section>
+                    <h3></h3>
+                    <section>
+                    	
+                    </section>
+                    <h3></h3>
+                    <section>
+                    	
+                    </section>
+                    <h3></h3>
+                    <section>
+                    	
+                    </section>
+                    <h3></h3>
+                    <section>
+                    	
                     </section>
                 </div>
             </form>    

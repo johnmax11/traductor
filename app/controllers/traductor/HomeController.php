@@ -1,23 +1,26 @@
 <?php
-  namespace traductor;
-  class HomeController extends \BaseController {
+namespace traductor;
+class HomeController extends \BaseController {
+
     /**
-    * Create a new controller instance.
-    *
-    * @return void
+     * Create a new controller instance.
+     *
+     * @return void
     */
     public function index()
     {
-      if (!\Auth::check()){
-        return \View::make("/");
-      }
+        /**verificamos session*/
+        if(\utilidades::verifySessionRol(__NAMESPACE__) != null){
+            return \utilidades::verifySessionRol(__NAMESPACE__);
+        }
         
-      /**verificamos si es primera vez*/
-      if(\Auth::user()->password == \Auth::user()->password_old){
-        /**user primera vez*/
-        return \View::make("traductor/home");
-      }
-        
-      return \View::make("traductor/settings");
+        /**verificamos si es primera vez*/
+        $bolFS = false;
+        if(\Auth::user()->password == \Auth::user()->password_old){
+            /**user primera vez*/
+            $bolFS = true;
+        }
+        return \View::make("traductor/home")->with('bolFirstSession',$bolFS);
     }
-  }
+
+}
