@@ -18,10 +18,38 @@ class facTmpCotizador {
             $objUsersTrack->archivo = $arrParametros->archivo;
 
             $objUsersTrack->save();
-            
+
             return $objUsersTrack->id;
         } catch (Exception $ex) {
             return false;
+        }
+    }
+
+    public function setUpdateTmpCotizador($arrParametros = array()) {
+        try {
+            $objTmpCotizador = new TmpCotizador();
+            $objTmpCotizador = $objTmpCotizador::findOrCreate("id",$arrParametros->id);
+            if (isset($arrParametros->words)) {
+                $objTmpCotizador->words = $arrParametros->words;
+            }
+            $objTmpCotizador->save();
+            return true;
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+    
+    public function getTmpCotizador($arrParametros = array()) {
+        try {
+            $objTmpCotizador = new TmpCotizador();
+            $objTmpCotizador = $objTmpCotizador::findOrCreate("id",$arrParametros->id);
+            if (isset($arrParametros->words)) {
+                $objTmpCotizador->words = $arrParametros->words;
+            }
+            $objTmpCotizador->save();
+            return true;
+        } catch (Exception $ex) {
+            throw $ex;
         }
     }
 

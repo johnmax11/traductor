@@ -21,16 +21,39 @@ class HomeController extends \BaseController {
      * @author Carlos andres ruales <carlos.ruales@syslab.so>
      * 
      */
-    public function readFiles($file,$ruta) {
+    public function readFiles($file, $ruta, $lastIdTmpCotizador) {
         try {
-            //print_r($file);
-            //$objClassFiles= new \classFilesCounting($file, $extension);
-            $laravelSession= \Cookie::get('laravel_session');
-            $objFacTmpCotizador= new \facTmpCotizador();
-            $objFacTmpCotizador->setInsertTmpCotizador((object)array(
-                "laravel_session_id"=>$laravelSession,
-                "archivo"=>$file
+            $acumWords = 0;
+            $objCounting = new \classFilesCounting($ruta . $file);
+            $contenido = $objCounting->getCountFiles();
+            $resultados = explode("/", $contenido);
+
+            //print_r($resultados);
+
+            foreach ($resultados as $string) {
+                if (!empty($string)) {
+                    $arrString = explode(" ", $string);
+
+                    //print_r($arrString);
+                    foreach ($arrString as $string) {
+                        $string=ltrim($string);
+                        if (empty($string) || is_null($arrString)) {
+                            continue;
+                        } else {
+                            $acumWords ++;
+                        }
+                    }
+                }
+            }
+            $objUpdCotizador = new \facTmpCotizador();
+            $objUpdCotizador->setUpdateTmpCotizador((object) array(
+                        "id" => $lastIdTmpCotizador,
+                        "words" => $acumWords
             ));
+
+
+
+            return $acumWords;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
@@ -50,7 +73,7 @@ class HomeController extends \BaseController {
             $obj = new \fileUploader($extensiones);
 
             //ruta donde se guardara el documento
-            $result = $obj->handleUpload($ruta,true);
+            $result = $obj->handleUpload($ruta, true);
 
             return $result;
         } catch (\Exception $e) {
@@ -62,40 +85,39 @@ class HomeController extends \BaseController {
         try {
             //guardamos en un array todo lo viene de los input
             $files = \Input::all();
-           
             
-           //print_r($_SERVER);
-           
-           $navegador= get_browser(filter_input(INPUT_SERVER, 'HTTP_USER_AGENT'), true);//filter_input(INPUT_SERVER, 'HTTP_USER_AGENT');
-           //print_r($navegador);
-           
- 
-
             //si no se envio o esta vacio lanzamos un error
             if ($files['qqfile'] == null || $files['qqfile'] == "") {
                 throw new \Exception("Has ocurred a problem: the file not exits or It's empty");
             }
-            
-            //ruta donde se guardara el documento
-            
-            
-            $ruta = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/traductor/public/files/';
-            // extensiones de documentos permitidos
-            $extensiones = $arrExtensions = array("doc", "docx", "ppt", "pptx", "pdf", "csv", "txt");
 
-            $result= $this->setFiles($ruta, $extensiones);
+            //ruta donde se guardara el documento
+            $ruta = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/traductor/public/files/';
+            
+            // extensiones de documentos permitidos
+            $extensiones = $arrExtensions = array("doc", "docx", "ppt", "pptx", "pdf", "txt","xlsx","xls");
+
+            $result = $this->setFiles($ruta, $extensiones);
 
             //identificamos que se guardo el documento y realizamos el conteo
             if (isset($result['success'])) {
-                $this->readFiles($result['file'],$ruta);
+                //Guardamos en base de datos si el archivo se cargo bien
+                $laravelSession = \Cookie::get('laravel_session');
+                $objFacTmpCotizador = new \facTmpCotizador();
+                $lastIdTmpCotizador = $objFacTmpCotizador->setInsertTmpCotizador((object) array(
+                            "laravel_session_id" => $laravelSession,
+                            "archivo" => $result['file']
+                ));
+                //Una vez guardado el archivo en BD, se lee la cantidad de palabras
+                $sentences = $this->readFiles($result['file'], $ruta, $lastIdTmpCotizador);
+                $result['sentences'] = $sentences;
             }
+
             //respuesta del proceso 
             echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
         } catch (\Exception $e) {
             return \Response::make($e->getMessage(), 400);
         }
     }
-    
-    
 
 }

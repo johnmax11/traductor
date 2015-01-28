@@ -33,7 +33,7 @@ $(document).ready(function () {
                         done();
                     }
                 },
-                acceptedFiles: ".pdf,.doc,.docx,.ppt,.pptx,.xls,.txt,.jpg",
+                acceptedFiles: ".pdf,.doc,.docx,.ppt,.pptx,.xls,.txt,.xlsx",
                 init: function () {
                     this.on("addedfile", function (file) {
                         console.log("evento");
@@ -64,6 +64,10 @@ $(document).ready(function () {
                 },
                 onProgress: function (id, fileName, loaded, total) {
                     console.log("esta en progreso");
+                },
+                onComplete: function(id, fileName, responseJSON){
+                    
+                    $("#idWords").html(responseJSON['sentences']);
                 }
             });
         }

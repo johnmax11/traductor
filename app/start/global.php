@@ -20,6 +20,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/facades',
         app_path().'/helpers',
         app_path().'/helpers/uploadClasses',
+        app_path().'/helpers/xlsClasses',
 
 ));
 
