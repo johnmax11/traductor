@@ -7,17 +7,18 @@
 //CLASS
 //
 function settings() {
-  
+
   this.doRequest = function(route, dataSend, typeRequest) {
     $.ajaxFrm({
       url: public_path + route,
       success: function(params, msg) {
-        if(msg.error){
+        if (msg.error) {
           location.reload();
           return;
         }
 
         var obj = msg.rows[0];
+        //console.log(obj);
 
         $('#first_name').val(obj.first_name_account);
         $('#first_middle_name').val(obj.first_middle_name_account);
@@ -29,6 +30,19 @@ function settings() {
         $('#phone_number_2').val(obj.phone_number_2_account);
         $('#phone_number_mobile_1').val(obj.phone_number_1_account);
         $('#phone_number_mobile_2').val(obj.phone_number_2_account);
+
+        var languajes = '';
+
+        for (var i = 0; i < obj.languajes.length; i++) {
+          languajes += '<option value="' + obj.languajes[i].id + '">' + obj.languajes[i].name +
+            '</options>';
+        }
+
+        $('#nativeLanguaje').append(languajes);
+        $('#sourceLanguaje').append(languajes);
+        $('#targetLanguaje').append(languajes);
+
+        $('#expertiseCombobox').append(languajes);
       }
     });
   }
@@ -65,20 +79,17 @@ function stepsTranslateProfiler(containerSteps) {
       },
       rules: {
         confirm: {
-          equalTo: "#confirmPasswordTranslator"
+          equalTo: "#password"
         }
       }
     };
 
     return optValidate;
   }
+
   //
   function optionsStepsProcess() {
     var optionsEvent = {
-      onFinishing: function(event, currentIndex) {
-        var finishing = eventOnFinishing(event, currentIndex);
-        return finishing;
-      },
       onFinished: function(event, currentIndex) {
         var finished = eventOnFinished(event, currentIndex);
         return finished;
@@ -86,6 +97,10 @@ function stepsTranslateProfiler(containerSteps) {
       onStepChanging: function(event, currentIndex, newIndex) {
         var stepChanging = eventOnStepChanging(event, currentIndex, newIndex);
         return stepChanging;
+      },
+      eventOnFinishing: function(event, currentIndex) {
+        var stepFinishing = eventOnFinishing(event, currentIndex);
+        return stepFinishing;
       }
     };
 
@@ -94,74 +109,10 @@ function stepsTranslateProfiler(containerSteps) {
 
   //
   function eventOnStepChanging(event, currentIndex, newIndex) {
-    var form = $('#formTranslatorAccount');
-
-    switch (currentIndex) {
-      case 0:
-        return validationAccountStep(form);
-        break;
-      case 1:
-        return validationSkillsStep(form);
-        break;
-      case 2:
-        return validationExperienseStep(form);
-        break;
-      case 3:
-        return validationCVCertificatesStep(form);
-        break;
-    }
     containerSteps.validate().settings.ignore = ":disabled,:hidden";
-
     return containerSteps.valid();
   }
 
-  function validationAccountStep(form) {
-    var password = form.find('input[name=password]');
-    var confirm = form.find('input[name=confirm]');
-
-    if (!password.val()) {
-      alert('Introduzca una contraseña');
-      return false;
-    }
-
-    var regularExpression = /^[a-zA-Z][0-9]$/;
-    var valid = regularExpression.test(password.val());
-
-    if (valid || (password.val().length < 6)) {
-      alert('No es una cntraseña valida');
-      return false;
-    }
-
-    if (!confirm.val()) {
-      alert('Introduzca una contraseña de confirmacion');
-      return false;
-    }
-
-    if (password.val() != confirm.val()) {
-      alert('las contraseñas deben ser iguales');
-      return false;
-    }
-
-    return true;
-  }
-
-  function validationSkillsStep(form) {
-    form.find('#sourceLanguaje');
-    form.find('#sourceLanguaje');
-    form.find('#sourceLanguaje');
-    form.find('#sourceLanguaje');
-    return true;
-  }
-
-  function validationExperienseStep(form) {
-    return true;
-  }
-
-  function validationCVCertificatesStep(form) {
-    return true;
-  }
-
-  //
   function eventOnFinishing(event, currentIndex) {
     containerSteps.validate().settings.ignore = ":disabled";
     return containerSteps.valid();
@@ -191,13 +142,13 @@ function stepsTranslateProfiler(containerSteps) {
     var optValidate = optionsvalidate();
     var skillsSection = new StepSkills();
     var expertiseSection = new expertise();
-    var boxContainer = containerSteps.children("div");
+    var boxContainer = $('#formTranslatorAccount').children("div");
 
-    //containerSteps.validate(optValidate);
+    containerSteps.validate(optValidate);
     boxContainer.steps(optStep);
     skillsSection.translationSection(boxContainer);
     skillsSection.proofreadingSection(boxContainer);
-    expertiseSection.expertisegSection(boxContainer);
+    expertiseSection.expertiseSection(boxContainer);
   }
 }
 
@@ -232,18 +183,36 @@ function StepSkills() {
     var record = '<tr>' +
       '<td>' + sourceLanguaje.text() + '</td>' +
       '<td>' + targetLanguaje.text() + '</td>' +
-      '<td><span>Pending</span></td>' +
       '<td><a href="#">Remove</a></td>' +
       '<input type="hidden" value="' + sourceLanguaje.val() + '-' + targetLanguaje.val() + '"/>'
     '</tr>';
+
     table.children('tbody').append(record);
 
     var lastRecordInserted = table.find('tr').last();
     var valueSelected = lastRecordInserted.find('input[type=hidden]');
+    valueSelected = valueSelected.parent();
 
-    valueSelected.click(removeRecordTable);
+    addLanguajeProofreading(sourceLanguaje, targetLanguaje);
+    valueSelected.children('td').children('a').click(removeOfComboboxAndTable);
 
     return false;
+  }
+
+  function addLanguajeProofreading(sourceLanguaje, targetLanguaje) {
+    var options = $('#proofreadingLanguaje option');
+    var bool = false;
+
+    options.each(function(index, value) {
+      if ($(this).val() == targetLanguaje.val())
+        bool = true;
+    });
+
+    if (!bool) {
+      var combxProofreading = '<option value="' + targetLanguaje.val() + '">' + targetLanguaje.text() +
+        '</option>';
+      $('#proofreadingLanguaje').append(combxProofreading);
+    }
   }
 
   this.proofreadingSection = function(containerSteps) {
@@ -260,7 +229,6 @@ function StepSkills() {
     var table = $('#proofreadingTable');
     var tr = table.find('tr').length;
 
-
     for (var i = 0; i < tr; i++) {
       var languaje = table.find('tr:eq(' + i + ') > input[type=hidden]').val();
 
@@ -270,25 +238,64 @@ function StepSkills() {
 
     var record = '<tr>' +
       '<td>' + proofreadingLanguaje.text() + '</td>' +
-      '<td><span>Pending</span></td>' +
       '<td><a href="#" class="removeProofreading">Remove</span></td>' +
       '<input type="hidden" value="' + proofreadingLanguaje.val() + '"/>'
     '</tr>';
-    table.children('tbody').append(record);
-    $('.removeProofreading').click(removeRecordTable);
 
+    table.children('tbody').append(record);
+
+    var lastRecordInserted = table.find('tr').last();
+    var valueSelected = lastRecordInserted.find('input[type=hidden]');
+
+    valueSelected.parent().click(removeRecordTable);
+    return false;
+  }
+
+  function removeOfComboboxAndTable() {
+    //verificar nuestra tabla si hay registros con ese lenguaje
+    var table = $('#translationTable');
+    var tr = table.find('tr').length;
+
+    var thisElement = $(this).parent().parent().find('input[type=hidden]').val();
+    var thisValue = thisElement.split('-');
+    $(this).parent().parent().remove(); //remove this element whit your record
+
+    for (var i = 0; i < tr.length; i++) {
+      var records = table.find('tr:eq(' + i + ') > input[type=hidden]').val();
+      var targetValue = records.split('-');
+
+      if (targetValue[1] == thisValue[1])
+        return;
+    }
+
+    var options = $('#proofreadingLanguaje option');
+    options.each(function(index, value) {
+      if ($(this).val() == thisValue[1]) {
+        $(this).remove();
+      }
+    });
+
+    var table = $('#proofreadingTable');
+    var tr = table.find('tr').length;
+
+    for (var i = 0; i <= tr; i++) {
+      var records = table.find('tr:eq(' + i + ') > input[type=hidden]');
+
+      if (records.val() == thisValue[1])
+        records.parent().remove();
+    }
     return false;
   }
 
   function removeRecordTable() {
-    $(this).parent().parent().remove();
+    $(this).remove();
     return false;
   }
 }
 
 //class
 function expertise() {
-  this.expertisegSection = function(containerSteps) {
+  this.expertiseSection = function(containerSteps) {
     var addButton = containerSteps.find('#addExpertiseLenguaje');
     addButton.click(addExpertiseSection);
   }
@@ -311,7 +318,6 @@ function expertise() {
 
     var record = '<tr>' +
       '<td>' + expertiseLanguaje.text() + '</td>' +
-      '<td><span>Pending</span></td>' +
       '<td><a href="#" class="removeExpertise">Remove</span></td>' +
       '<input type="hidden" value="' + expertiseLanguaje.val() + '"/>'
     '</tr>';

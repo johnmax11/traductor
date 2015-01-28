@@ -40,6 +40,14 @@ class SettingsController extends \BaseController {
           "no existen los datos del usuario en account data communications --> ".\Auth::user()->id
         );
       }
+
+      /**consultamos la tabla languajes*/
+      $objFacLanguaje = new \facLanguajeData();
+      $arrLanguajes = $objFacLanguaje->getLanguajeData();
+
+      if(count($arrLanguajes)==0){
+        throw new \Exception("no existen lenguajes");
+      }
       
       $arrResponse->rows[0] = new \stdClass();
 
@@ -57,10 +65,12 @@ class SettingsController extends \BaseController {
       $arrResponse->rows[0]->phone_number_2_account = $arrDAccDatComm[0]->phone_number_2;
       $arrResponse->rows[0]->phone_number_mobile_1_account = $arrDAccDatComm[0]->phone_number_mobile_1;
       $arrResponse->rows[0]->phone_number_mobile_2_account = $arrDAccDatComm[0]->phone_number_mobile_2;
+      $arrResponse->rows[0]->languajes = $arrLanguajes;
       $arrResponse->error = false;
       
       return \Response::json($arrResponse);
     } catch (\Exception $ex) {
+      echo $ex;
       throw $ex;
     }
   }

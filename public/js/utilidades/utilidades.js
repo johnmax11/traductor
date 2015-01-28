@@ -24,7 +24,6 @@ $(document).ready(function(){
         }
     }
     
-    
     /**
      * funciones para menejo de strings
      */

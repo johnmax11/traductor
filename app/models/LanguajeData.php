@@ -16,12 +16,11 @@ class LanguajeData extends Eloquent {
     
     // Put this in any model and use
     // Modelname::findOrCreate($id);
-    /*
+    
     public static function findOrCreate($column,$id)
     {
         $obj = static::where($column , '=', $id)->first();
         //$obj = static::find($id);
         return $obj ?: new static;
     }
-    */
 }
