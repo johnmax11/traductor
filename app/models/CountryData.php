@@ -4,14 +4,14 @@
  *
  * @author programador1
  */
-class LanguajeData extends Eloquent {
+class CountryData extends Eloquent {
     //put your code here
     /**
     * The database table used by the model.
     *
     * @var string
     */
-    protected $table = 'params_languajes';
+    protected $table = 'params_countries';
     public $timestamps = false;
     
     // Put this in any model and use

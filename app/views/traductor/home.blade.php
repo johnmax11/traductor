@@ -4,6 +4,19 @@
     <div id="container">
         <form id="formTranslatorAccount" action="#" enctype="multipart/form-data">
             <div>
+                <h3>Passsword Update</h3>
+                <section>
+                        <div>
+                            <div>
+                                <label for="password">Password *</label>
+                                <input id="password" name="password" type="password "/>
+                            </div>
+                            <div>
+                                <label for="confirm">Confirm Password *</label>
+                                <input id="confirm" name="confirm" type="password "/> 
+                            </div>
+                        </div>
+                </section>
                 <h3>Account Information</h3>
                 <section>
                     <div>
@@ -124,7 +137,7 @@
                             </label>
                         </div>
                         <div>
-                            <select id="expertiseCombobox" name="expertiseCombobox" class="required">
+                            <select id="expertiseCombobox" name="expertiseCombobox" >
                                 <option value="">Select languaje</option>
                             </select>
                         </div>
@@ -354,7 +367,7 @@
                         </div>
                 </section>
                 <h3>Social Networks</h3>
-                    <section>
+                <section>
                         <div>
                             <label for="">Skype </label>
                             <input type="text" name="Skype" id="txtSkype" />    
@@ -419,32 +432,11 @@
                             <label for="">Others</label>
                             <input type="text" name="txtOthers" id="txtOthers" />    
                         </div>
-                        <div>
-                            <label for=""></label>
-                            <input type="text" name="refereeOrg" />    
-                        </div>
-                        <div>
-                            <label for=""></label>
-                            <input type="text" name="refereeOrg" />    
-                        </div>
-                    </section>
-                    <h3>Mailing Preferences</h3>
-                    <section>
+                </section>
+                <h3>Mailing Preferences</h3>
+                <section>
                         <p>email</p>
-                    </section>
-                    <h3>Passsword Update</h3>
-                    <section>
-                        <div>
-                            <div>
-                                <label for="password">Password *</label>
-                                <input id="password" name="password" type="password" class="required" />
-                            </div>
-                            <div>
-                                <label for="confirm">Confirm Password *</label>
-                                <input id="confirm" name="confirm" type="password" class="required" /> 
-                            </div>
-                        </div>
-                    </section>
+                </section>
                 <h3>Thanks</h3>
                 <section>
                     <div>

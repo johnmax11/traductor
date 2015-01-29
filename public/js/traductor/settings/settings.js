@@ -17,31 +17,40 @@ function settings() {
           return;
         }
 
-        var obj = msg.rows[0];
-        //console.log(obj);
+        var response = msg.rows[0];
+        //console.log(response);
 
-        $('#first_name').val(obj.first_name_account);
-        $('#first_middle_name').val(obj.first_middle_name_account);
-        $('#last_name').val(obj.last_name_account);
-        $('#last_middle_name').val(obj.last_middle_name_account);
-        $('#email_notf_1').val(obj.email_notification_1_account);
-        $('#email_notf_2').val(obj.email_notification_2_account);
-        $('#phone_number_1').val(obj.phone_number_1_account);
-        $('#phone_number_2').val(obj.phone_number_2_account);
-        $('#phone_number_mobile_1').val(obj.phone_number_1_account);
-        $('#phone_number_mobile_2').val(obj.phone_number_2_account);
+        $('#first_name').val(response.first_name_account);
+        $('#first_middle_name').val(response.first_middle_name_account);
+        $('#last_name').val(response.last_name_account);
+        $('#last_middle_name').val(response.last_middle_name_account);
+        $('#email_notf_1').val(response.email_notification_1_account);
+        $('#email_notf_2').val(response.email_notification_2_account);
+        $('#phone_number_1').val(response.phone_number_1_account);
+        $('#phone_number_2').val(response.phone_number_2_account);
+        $('#phone_number_mobile_1').val(response.phone_number_1_account);
+        $('#phone_number_mobile_2').val(response.phone_number_2_account);
 
         var languajes = '';
+        console.log(response.trad_languaje);
+        for (var i = 0; i < response.languajes.length; i++) {
+          languajes += '<option value="' + response.languajes[i].id + '" ';
 
-        for (var i = 0; i < obj.languajes.length; i++) {
-          languajes += '<option value="' + obj.languajes[i].id + '">' + obj.languajes[i].name +
+          if (response.trad_languaje[0].id == response.languajes[i].id)
+            languajes += ' selected ';
+
+          languajes += '>' + response.languajes[i].name + '</options>';
+        }
+        $('#nativeLanguaje').append(languajes);
+
+        var languajes = '';
+        for (var i = 0; i < response.languajes.length; i++) {
+          languajes += '<option value="' + response.languajes[i].id + '">' + response.languajes[i].name +
             '</options>';
         }
-
-        $('#nativeLanguaje').append(languajes);
+        
         $('#sourceLanguaje').append(languajes);
         $('#targetLanguaje').append(languajes);
-
         $('#expertiseCombobox').append(languajes);
       }
     });
